@@ -22,19 +22,17 @@ async def get_patient() -> list[Patient]:
 async def create_patient(patient: Patient) -> None:
     patients.append(patient)
 
-@app.put("/patients/{fname}")
-async def update_patient(first_name: str, updated_patient: Patient) -> Patient:
-    for i, patient in enumerate(patients):
-        if first_name ==  patient.first_name:
-            patient[i] = updated_patient
+@app.put("/patients/{first_name}")
+async def update_patient(first_name: str, updated_patient: Patient):
+    for patient in range(len(patients)):
+        if first_name in patients[patient].first_name:
+            patients[patient] = updated_patient
             return updated_patient
-        raise KeyError("Patient not found")
 
 @app.delete("/patients/{first_name}")
 async def delete_patient(first_name: str) -> str:
-    for i, patient in enumerate(patients):
-        if first_name == patient.first_name:
-            patients.pop(i)
+    for patient in patients:
+        if first_name in patient.first_name:
+            patients.remove(patient)
             return "Patient deleted"
-        raise KeyError("Patient not found")
 
